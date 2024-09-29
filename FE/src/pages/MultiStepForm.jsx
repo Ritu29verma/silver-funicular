@@ -5,10 +5,30 @@ import Form3 from '../components/Form3';
 import Form4 from '../components/Form4';
 import Form5 from '../components/Form5';
 import Form6 from '../components/Form6';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const athleteId = query.get('athleteId');
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (athleteId) {
+      setFormData((prevData) => ({
+        ...prevData,
+        athleteId, // Assuming you want to store it in formData
+      }));
+    }
+  }, [athleteId]);
+
   const [formData, setFormData] = useState({
+    // athleteId: athleteId || '',
     physicalCheckupDetails: {
       height: '',
       weight: '',
@@ -121,19 +141,15 @@ const MultiStepForm = () => {
   };
 
  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  
-    // const newErrors = validateForm();
-    
-    // if (Object.keys(newErrors).length > 0) {
-    //   setErrors(newErrors);
-    //   console.log('Validation failed');
-    // } else {
-    //   setErrors({});
-    console.log('Form submitted:', formData);
-      // Proceed with form submission, e.g., API call
-    // }
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/doping-form/submit-form', formData);
+      console.log(response.data.message);
+
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to submit form:', error);
+    }
   };
   
   const validateForm1 = () => {
@@ -151,45 +167,6 @@ const MultiStepForm = () => {
     return Object.keys(newErrors).length === 0; // Return true if no errors
   };
 
-//   const validateForm2 = () => {
-//     const newErrors = {};
-//     dopingTestDetails.forEach((detail, index) => {
-//       if (!detail.testType) newErrors[`testType${index}`] = 'Type of test is required.';
-//       if (!detail.testDate) newErrors[`testDate${index}`] = 'Test date is required.';
-//       if (!detail.testLocation) newErrors[`testLocation${index}`] = 'Test location is required.';
-//       if (!detail.sampleID) newErrors[`sampleID${index}`] = 'Sample ID is required.';
-//       if (!detail.result) newErrors[`result${index}`] = 'Test result is required.';
-//     });
-//     setErrors(newErrors);
-//     return Object.keys(newErrors).length === 0;
-//   };
-
-  // Validation function for Step 3 (Substance Detected)
-//   const validateForm3 = () => {
-//     const newErrors = {};
-
-//     if (formData.substanceDetected.length === 0) {
-//       newErrors.substanceDetected = 'At least one substance must be detected.';
-//     } else {
-//       formData.substanceDetected.forEach((substance, index) => {
-//         if (!substance.substanceName) {
-//           newErrors[`substanceName${index}`] = `Substance Name is required for entry ${index + 1}.`;
-//         }
-//         if (!substance.substanceCategory) {
-//           newErrors[`substanceCategory${index}`] = `Substance Category is required for entry ${index + 1}.`;
-//         }
-//         if (substance.concentration == null) {
-//           newErrors[`concentration${index}`] = `Concentration is required for entry ${index + 1}.`;
-//         }
-//         if (!substance.detectionMethod) {
-//           newErrors[`detectionMethod${index}`] = `Detection Method is required for entry ${index + 1}.`;
-//         }
-//       });
-//     }
-
-//     setErrors(newErrors);
-//     return Object.keys(newErrors).length === 0; // Return true if no errors
-//   };
 
   const validateForm4 = () => { 
     const newErrors = {};

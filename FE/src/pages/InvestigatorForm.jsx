@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+
 const InvestigatorForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -19,6 +21,8 @@ const InvestigatorForm = () => {
   const [errors, setErrors] = useState({});
   const [licenseFiles, setLicenseFiles] = useState([{ file: null }]);
 
+  const navigate = useNavigate();
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -99,6 +103,7 @@ const InvestigatorForm = () => {
       .then(response => {
         console.log(response.data);
         alert('Form submitted successfully!');
+        navigate('/login');
         // Reset form here if needed
       })
       .catch(error => {

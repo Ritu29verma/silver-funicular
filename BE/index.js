@@ -5,6 +5,9 @@ import { dirname, join } from 'path';
 import { connect } from 'mongoose';
 import athleteRoute from './routes/athleteRoute.js';
 import investigatorRoutes from './routes/investigator.js';
+import dopingFormRoutes from './routes/dopingFormRoutes.js'
+
+
 import cors from 'cors'
 
 const app = express();
@@ -29,6 +32,8 @@ app.use('/uploads', express.static(join(__dirname, 'uploads')));
 // Routes
 app.use('/api/athletes', athleteRoute);
 app.use('/api/investigators', investigatorRoutes);
+app.use('/api/doping-form', dopingFormRoutes);
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

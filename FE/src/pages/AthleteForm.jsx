@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 
+import { useNavigate } from 'react-router-dom';
+
 const AthleteRegistrationForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -50,7 +52,7 @@ const AthleteRegistrationForm = () => {
   const [medicalReports, setMedicalReports] = useState([{ file: null }]);
   const [biologicalPassport, setBiologicalPassport] = useState({ file: null });
 
-
+  const navigate = useNavigate();
 
 
   const validateForm = () => {
@@ -282,6 +284,7 @@ const AthleteRegistrationForm = () => {
 
         console.log('Form submission successful', response.data);
         alert('Form submitted successfully!');
+        navigate('/');
       } catch (error) {
         console.error('Error submitting the form', error);
         alert('Failed to submit the form');

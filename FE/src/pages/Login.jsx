@@ -14,11 +14,9 @@ const LoginForm = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/api/investigators/login', { email, password });
-      // Save the token in localStorage (or handle it as needed)
       localStorage.setItem('token', response.data.token);
       
-      // Navigate to the home page
-      navigate('/athlete-form');
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred. Please try again.');
     }

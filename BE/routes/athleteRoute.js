@@ -7,10 +7,8 @@ const router = Router();
 // Set up multer for file uploads
 const storage = diskStorage({
   destination: (req, file, cb) => {
-   // Specify the upload directory for biological passports
      if (file.fieldname === "medicalReports") {
-      cb(null, "uploads/athlete/medical_reports"); // Specify the upload directory for medical reports
-    } else {
+      cb(null, "uploads/athlete/medical_reports"); 
       cb(new Error("Invalid file field name"), null);
     }
   },
@@ -128,4 +126,38 @@ router.post(
   }
 );
 
+router.get("/allAthletes", async (req, res) => {
+  try {
+    const athletes = await Athlete.find(); // Fetch all athletes
+    res.status(200).json(athletes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error, please try again later" });
+  }
+});
+
+// Route to get an athlete by athleteId
+router.get("/allAthletes/:athleteId", async (req, res) => {
+  const { athleteId } = req.params;
+  
+  try {
+    const athlete = await Athlete.findOne({ athleteId }); // Fetch the athlete by athleteId
+    if (!athlete) {
+      return res.status(404).json({ message: "Athlete not found" });
+    }
+    res.status(200).json(athlete);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error, please try again later" });
+  }
+});
+
 export default router;
+
+
+
+
+
+
+
+

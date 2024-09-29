@@ -16,7 +16,7 @@ const athleteSchema = new Schema({
   sport: { type: String, required: true },
   category: { type: String, required: true },
   teamClubName: { type: String, required: true },
-  athleteId: { type: String, required: true },
+  athleteId: { type: String, required: true,unique:true },
   passportId: { type: String, required: true },
   contactNumber: { type: String, required: true },
   email: { type: String, required: true },
