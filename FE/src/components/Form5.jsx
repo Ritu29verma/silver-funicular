@@ -19,6 +19,18 @@ const Form5 = ({ formData, handleChange, errors }) => {
           <p className="text-red-500">{errors.medicationsAndSupplements}</p>
         )}
       </div>
+
+      <div>
+          <label className="block font-medium mb-3">Enter Genetic Sequence</label>
+          <input
+            type="text"
+            name="genSequence"
+            value={formData.genSequence}
+            onChange={(e) => handleChange(e, 'genSequence')}
+            className="w-full border px-4 py-2 rounded"
+          />
+          {errors.genSequence && <p className="text-red-500">{errors.genSequence}</p>}
+        </div>
     </div>
     </div>
   );

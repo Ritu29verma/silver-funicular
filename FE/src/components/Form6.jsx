@@ -8,7 +8,7 @@ const Form6 = ({ formData, handleChange, errors }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label>Investigator's Name</label>
+          <label className="block font-medium mb-3">Investigator's Name</label>
           <input
             type="text"
             name="investigatorName"
@@ -20,7 +20,7 @@ const Form6 = ({ formData, handleChange, errors }) => {
         </div>
 
         <div>
-          <label>Date of Investigation</label>
+          <label className="block font-medium mb-3">Date of Investigation</label>
           <input
             type="date"
             name="dateOfInvestigation"
@@ -32,7 +32,7 @@ const Form6 = ({ formData, handleChange, errors }) => {
         </div>
 
         <div>
-          <label>Location</label>
+          <label className="block font-medium mb-3">Location</label>
           <input
             type="text"
             name="locationOfInvestigation"
@@ -44,7 +44,7 @@ const Form6 = ({ formData, handleChange, errors }) => {
         </div>
 
         <div>
-          <label>Status of Investigation</label>
+          <label className="block font-medium mb-3">Status of Investigation</label>
           <select
             name="investigationStatus"
             value={formData.investigationDetails.investigationStatus}
@@ -60,7 +60,7 @@ const Form6 = ({ formData, handleChange, errors }) => {
         </div>
 
         <div>
-          <label className="block font-medium mb-2" >Additional Notes</label>
+          <label className="block font-medium mb-3" >Additional Notes</label>
           <textarea
             name="notes"
             value={formData.investigationDetails.notes}

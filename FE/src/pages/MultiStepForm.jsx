@@ -45,6 +45,7 @@ const MultiStepForm = () => {
       partialSampleDetails: [],
     },
     medicationsSupplements: '',
+    genSequence : '',
     investigationDetails: {
       investigatorName: '',
       dateOfInvestigation: '',
@@ -214,7 +215,7 @@ const MultiStepForm = () => {
     if (!formData.medicationsSupplements || formData.medicationsSupplements.length === 0) {
       newErrors.medicationsSupplements = 'Please provide information on medications or supplements taken.';
     }
-  
+    if (!formData. genSequence) newErrors. genSequence = ' genSequence is required.';
     return newErrors;
   };
   
@@ -224,7 +225,7 @@ const MultiStepForm = () => {
     if (!formData.investigatorName) newErrors.investigatorName = 'Investigator name is required.';
     if (!formData.dateOfInvestigation) newErrors.dateOfInvestigation = 'Date of investigation is required.';
     if (!formData.locationOfInvestigation) newErrors.locationOfInvestigation = 'Location of investigation is required.';
-    if (!formData.investigationStatus) newErrors.investigationStatus = 'Investigation status is required.';
+
   
     return newErrors;
   };
@@ -275,12 +276,12 @@ const MultiStepForm = () => {
             Previous
           </button>
         )}
-        {currentStep < 6 && (
+        {currentStep < 5 && (
           <button onClick={nextStep} className="bg-blue-500 text-white px-4 py-2 rounded">
             Next
           </button>
         )}
-        {currentStep === 6 && (
+        {currentStep === 5 && (
           <button 
             onClick={handleSubmit}
             className="bg-green-500 text-white px-4 py-2 rounded "
