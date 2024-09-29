@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import axios from 'axios'
 const InvestigatorForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -66,45 +66,52 @@ const InvestigatorForm = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validate the form
+  
     const validationErrors = validate();
-
-    // If there are validation errors, set the errors state
+  
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-
-    // If no errors, proceed with form submission logic
-    console.log('Form submitted successfully:', formData);
-    alert('Form submitted successfully!');
+  
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append('fullName', formData.fullName);
+    formDataToSubmit.append('password', formData.password);
+    formDataToSubmit.append('dob', formData.dob);
+    formDataToSubmit.append('gender', formData.gender);
+    formDataToSubmit.append('nationality', formData.nationality);
+    formDataToSubmit.append('idNumber', formData.idNumber);
+    formDataToSubmit.append('contactNumber', formData.contactNumber);
+    formDataToSubmit.append('email', formData.email);
+    formDataToSubmit.append('address', formData.address);
+    formDataToSubmit.append('qualification', formData.qualification);
+    formDataToSubmit.append('experience', formData.experience);
     
-    // Clear the form if successful
-    setFormData({
-      fullName: '',
-      password: '',
-      dob: '',
-      gender: '',
-      nationality: '',
-      idNumber: '',
-      contactNumber: '',
-      email: '',
-      address: '',
-      qualification: '',
-      experience: '',
-      licenses: []
+    // Append license files
+    licenseFiles.forEach((license) => {
+      if (license.file) {
+        formDataToSubmit.append('licenses', license.file);
+      }
     });
-
-    // Clear errors
-    setErrors({});
+  
+    // Submit form data using Axios
+    axios.post('http://localhost:5000/api/investigators/register', formDataToSubmit)
+      .then(response => {
+        console.log(response.data);
+        alert('Form submitted successfully!');
+        // Reset form here if needed
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   return (
-    <div className="bg-gray-100 p-6 min-h-screen flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-8">
+    <div className="bg-[#e4e4e2] p-6 min-h-screen flex flex-col items-center justify-center">
+      <div className="bg-white shadow-2xl rounded-lg w-full max-w-4xl pt-4 my-auto">
         <h2 className="text-2xl font-bold text-center mb-6">Investigator Registration Form</h2>
-
+</div>
+<div className="bg-white shadow-2xl mt-3 rounded-lg w-full max-w-4xl p-8">
         <form onSubmit={handleSubmit}>
           {/* Personal Details Section */}
           <div>
