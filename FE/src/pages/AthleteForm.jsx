@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 
-import { useNavigate } from 'react-router-dom';
-
 const AthleteRegistrationForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -48,11 +46,13 @@ const AthleteRegistrationForm = () => {
     digitalSignature: null,
   });
 
+  
+
   const [errors, setErrors] = useState({});
   const [medicalReports, setMedicalReports] = useState([{ file: null }]);
   const [biologicalPassport, setBiologicalPassport] = useState({ file: null });
 
-  const navigate = useNavigate();
+
 
 
   const validateForm = () => {
@@ -94,7 +94,7 @@ const AthleteRegistrationForm = () => {
       'lastTestDate',
       'consentTesting',
       'declaration',
-      'digitalSignature',
+      // 'digitalSignature',
     ];
   
     // Check for empty required fields
@@ -137,7 +137,7 @@ const AthleteRegistrationForm = () => {
   
     // Check if at least one test result is added
     if (!formData.lastTestDate) newErrors.lastTestDate = 'Last Test Date is required.';
-    if (!formData.digitalSignature) newErrors.digitalSignature = 'Digital Signature is required.';
+    // if (!formData.digitalSignature) newErrors.digitalSignature = 'Digital Signature is required.';
     formData.testResults.forEach((result, index) => {
       if (!result.type) newErrors[`testResults.${index}.type`] = 'Type is required.';
       if (!result.result) newErrors[`testResults.${index}.result`] = 'Result is required.';
@@ -180,23 +180,23 @@ const AthleteRegistrationForm = () => {
 
   const handleTestResultChange = (index, e) => {
     const { name, value } = e.target;
-    const newTestResults = [...formData.testResults];
-    newTestResults[index][name] = value;
-    setFormData((prevData) => ({
-      ...prevData,
-      testResults: newTestResults,
+    const updatedTestResults = [...formData.testResults];
+    updatedTestResults[index][name] = value;
+    setFormData((prevState) => ({
+      ...prevState,
+      testResults: updatedTestResults,
+    }));
+  };
+  const addTestResult = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      testResults: [
+        ...prevState.testResults,
+        { date: '', type: '', result: '', authority: '', upload: null },
+      ],
     }));
   };
 
-  const addTestResult = () => {
-    setFormData({
-      ...formData,
-      testResults: [
-        ...formData.testResults,
-        { date: '', type: '', result: '', authority: '', upload: null },
-      ],
-    });
-  };
 
    const handleSubmit = async (e) => {
     e.preventDefault();
@@ -284,7 +284,6 @@ const AthleteRegistrationForm = () => {
 
         console.log('Form submission successful', response.data);
         alert('Form submitted successfully!');
-        navigate('/');
       } catch (error) {
         console.error('Error submitting the form', error);
         alert('Failed to submit the form');
@@ -299,9 +298,17 @@ const AthleteRegistrationForm = () => {
 
 
   return (
+
+    <div className="bg-[#e4e4e2] p-6 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-white shadow-2xl rounded-lg w-full max-w-4xl pt-4 my-auto">
+      <h2 className="text-2xl font-bold text-center mb-6">Athlete Registration Form</h2>
+</div>
+<form onSubmit={handleSubmit} className="bg-white shadow-2xl mt-3 rounded-lg w-full max-w-4xl p-8">
+
+{/*   
 <div className='bg-gray-100'>
 <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-8 bg-white rounded shadow-md">
-      <h2 className="text-2xl font-bold flex justify-center items-center mb-4">Athlete Registration Form</h2>
+      <h2 className="text-2xl font-bold flex justify-center items-center mb-4">Athlete Registration Form</h2> */}
       
       <h3 className="text-lg font-semibold mt-6 mb-2">Personal Details:</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -634,197 +641,270 @@ const AthleteRegistrationForm = () => {
         {errors.dopingControl && <p className="text-red-500 text-sm">{errors.dopingControl}</p>}
       </div>
 
-      {formData.testResults.map((result, index) => (
+      <div>
+        <label className="block font-medium mb-2">Previous Injuries</label>
+        <input
+          type="text"
+          name="previousInjuries"
+          value={formData.previousInjuries}
+          onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+        />
+        {errors.previousInjuries && <span>{errors.previousInjuries}</span>}
+      </div>
+
+      <div>
+        <label className="block font-medium mb-2">Ranking</label>
+        <input
+          type="text"
+          name="ranking"
+          value={formData.ranking}
+          onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
+        />
+        {errors.ranking && <span>{errors.ranking}</span>}
+      </div>
+
+      <div>
+        <label className="block font-medium mb-2">Surgeries</label>
+        <input
+          type="text"
+          name="surgeries"
+          value={formData.surgeries}
+          onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
+        />
+        {errors.surgeries && <span>{errors.surgeries}</span>}
+      </div>
+
+      <div>
+        <label className="block font-medium mb-2">WADA Registration</label>
+        <input
+          type="text"
+          name="wadaRegistration"
+          value={formData.wadaRegistration}
+          onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
+        />
+        {errors.wadaRegistration && <span>{errors.wadaRegistration}</span>}
+      </div>
+
+      <div>
+        <label className="block font-medium mb-2">Medications</label>
+        <input
+          type="text"
+          name="medications"
+          value={formData.medications}
+          onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
+        />
+        {errors.medications && <span>{errors.medications}</span>}
+      </div>
+
+      {/* {formData.testResults.map((result, index) => (
         <div key={index}>
           <h3>Test Result {index + 1}</h3>
-          <label>
+          <label className="block font-medium mb-2">
             Type:
             <input
               type="text"
               name="type"
               value={result.type}
               onChange={(e) => handleTestResultChange(index, e)}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
             />
           </label>
           {errors[`testResults.${index}.type`] && <p>{errors[`testResults.${index}.type`]}</p>}
 
-          <label>
+          <label className="block font-medium mb-2">
             Result:
             <input
               type="text"
               name="result"
               value={result.result}
               onChange={(e) => handleTestResultChange(index, e)}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
             />
           </label>
           {errors[`testResults.${index}.result`] && <p>{errors[`testResults.${index}.result`]}</p>}
 
-          <label>
+          <label className="block font-medium mb-2">
             Authority:
             <input
               type="text"
               name="authority"
               value={result.authority}
               onChange={(e) => handleTestResultChange(index, e)}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
             />
           </label>
           {errors[`testResults.${index}.authority`] && <p>{errors[`testResults.${index}.authority`]}</p>}
         </div>
-      ))}
+      ))} */}
+
+<div className='bg-white p-5 rounded-md'>
+      <h2 className="text-xl font-bold mb-4">Test Results</h2>
+      <div className="space-y-4">
+        {formData.testResults.map((result, index) => (
+          <div key={index} className="p-4 border border-gray-300 rounded-md bg-gray-50">
+            <h3 className="font-semibold mb-2">Test Result {index + 1}</h3>
+
+            <label className="block font-medium mb-2">
+              Date:
+              <input
+                type="date"
+                name="date"
+                value={result.date}
+                onChange={(e) => handleTestResultChange(index, e)}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </label>
+
+            <label className="block font-medium mb-2">
+              Type:
+              <input
+                type="text"
+                name="type"
+                value={result.type}
+                onChange={(e) => handleTestResultChange(index, e)}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </label>
+
+            <label className="block font-medium mb-2">
+              Result:
+              <input
+                type="text"
+                name="result"
+                value={result.result}
+                onChange={(e) => handleTestResultChange(index, e)}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </label>
+
+            <label className="block font-medium mb-2">
+              Authority:
+              <input
+                type="text"
+                name="authority"
+                value={result.authority}
+                onChange={(e) => handleTestResultChange(index, e)}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </label>
+          </div>
+        ))}
+        
+        <button
+          onClick={addTestResult}
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+        >
+          Add Test Result
+        </button>
+      </div>
+    </div>
 
       <div>
-        <label>Allergies</label>
+        <label className="block font-medium mb-2"> Allergies</label>
         <input
           type="text"
           name="allergies"
           value={formData.allergies}
           onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
         />
         {errors.allergies && <span>{errors.allergies}</span>}
       </div>
 
       <div>
-        <label>Biological Passport Number</label>
+        <label className="block font-medium mb-2">Biological Passport Number</label>
         <input
           type="text"
           name="biologicalPassportNumber"
           value={formData.biologicalPassportNumber}
           onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
         />
         {errors.biologicalPassportNumber && <span>{errors.biologicalPassportNumber}</span>}
       </div>
 
-      <div>
-        <label>Consent for Testing</label>
-        <input
-          type="checkbox"
-          name="consentTesting"
-          checked={formData.consentTesting}
-          onChange={handleChange}
-        />
-        {errors.consentTesting && <span>{errors.consentTesting}</span>}
-      </div>
+      
 
       <div>
-        <label>Declaration</label>
-        <input
-          type="checkbox"
-          name="declaration"
-          checked={formData.declaration}
-          onChange={handleChange}
-        />
-        {errors.declaration && <span>{errors.declaration}</span>}
-      </div>
-
-      <div>
-        <label>Last Test Date</label>
+        <label className="block font-medium mb-2">Last Test Date</label>
         <input
           type="date"
           name="lastTestDate"
           value={formData.lastTestDate}
           onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
         />
         {errors.lastTestDate && <span>{errors.lastTestDate}</span>}
       </div>
 
       <div>
-        <label>Major Competitions</label>
+        <label className="block font-medium mb-2">Major Competitions</label>
         <input
           type="text"
           name="majorCompetitions"
           value={formData.majorCompetitions}
           onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
         />
         {errors.majorCompetitions && <span>{errors.majorCompetitions}</span>}
       </div>
 
       <div>
-        <label>Physician Contact Number</label>
+        <label className="block font-medium mb-2">Physician Contact Number</label>
         <input
           type="text"
           name="physicianContactNumber"
           value={formData.physicianContactNumber}
           onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
         />
         {errors.physicianContactNumber && <span>{errors.physicianContactNumber}</span>}
       </div>
 
       <div>
-        <label>Physician Email</label>
+        <label className="block font-medium mb-2">Physician Email</label>
         <input
           type="email"
           name="physicianEmail"
           value={formData.physicianEmail}
           onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
         />
         {errors.physicianEmail && <span>{errors.physicianEmail}</span>}
       </div>
 
       <div>
-        <label>Physician Name</label>
+        <label className="block font-medium mb-2">Physician Name</label>
         <input
           type="text"
           name="physicianName"
           value={formData.physicianName}
           onChange={handleChange}
+          className={`w-full p-2 border ${errors.dopingControl ? 'border-red-500' : 'border-gray-300'} rounded`}
+
         />
         {errors.physicianName && <span>{errors.physicianName}</span>}
       </div>
 
-      <div>
-        <label>Previous Injuries</label>
-        <input
-          type="text"
-          name="previousInjuries"
-          value={formData.previousInjuries}
-          onChange={handleChange}
-        />
-        {errors.previousInjuries && <span>{errors.previousInjuries}</span>}
-      </div>
-
-      <div>
-        <label>Ranking</label>
-        <input
-          type="text"
-          name="ranking"
-          value={formData.ranking}
-          onChange={handleChange}
-        />
-        {errors.ranking && <span>{errors.ranking}</span>}
-      </div>
-
-      <div>
-        <label>Surgeries</label>
-        <input
-          type="text"
-          name="surgeries"
-          value={formData.surgeries}
-          onChange={handleChange}
-        />
-        {errors.surgeries && <span>{errors.surgeries}</span>}
-      </div>
-
-      <div>
-        <label>WADA Registration</label>
-        <input
-          type="text"
-          name="wadaRegistration"
-          value={formData.wadaRegistration}
-          onChange={handleChange}
-        />
-        {errors.wadaRegistration && <span>{errors.wadaRegistration}</span>}
-      </div>
-
-      <div>
-        <label>Medications</label>
-        <input
-          type="text"
-          name="medications"
-          value={formData.medications}
-          onChange={handleChange}
-        />
-        {errors.medications && <span>{errors.medications}</span>}
-      </div>
+      
 
 
       <h3 className="text-lg font-semibold mt-6 mb-2">Medical Document Upload:</h3>
@@ -864,20 +944,44 @@ const AthleteRegistrationForm = () => {
               </div> */}
 
 
-      <h3 className="text-lg font-semibold mt-6 mb-2">Consent and Declarations:</h3>
+<h3 className="text-lg font-semibold mt-6 mb-2">Consent and Declarations:</h3>
+      
       <div className="mb-4">
-        <label className="block font-medium mb-2" htmlFor="consent">Consent Declaration</label>
-        <textarea
-          id="consent"
-          name="consent"
-          value={formData.consent}
-          onChange={handleChange}
-          className={`w-full p-2 border ${errors.consent ? 'border-red-500' : 'border-gray-300'} rounded`}
-        ></textarea>
-        {errors.consent && <p className="text-red-500 text-sm">{errors.consent}</p>}
+        <label className="block font-medium mb-2 text-gray-700">
+          By checking this box, I consent to undergo doping control testing as required by the relevant authorities.
+        </label>
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="consentTesting"
+            checked={formData.consentTesting}
+            onChange={handleChange}
+            className="w-5 h-5 text-green-500 border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
+          />
+          <span className="text-gray-700">I consent for testing</span>
+        </div>
+        {errors.consentTesting && <span className="text-red-500 text-sm">{errors.consentTesting}</span>}
       </div>
+      
+      <div className="mb-4">
+        <label className="block font-medium mb-2 text-gray-700">
+          By checking this box, I declare that all the information I have provided is true and accurate to the best of my knowledge.
+        </label>
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="declaration"
+            checked={formData.declaration}
+            onChange={handleChange}
+            className="w-5 h-5 text-green-500 border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
+          />
+          <span className="text-gray-700">I declare that the provided information is accurate</span>
+        </div>
+        {errors.declaration && <span className="text-red-500 text-sm">{errors.declaration}</span>}
+      </div>
+      
 
-      <div>
+      {/* <div>
         <label>Digital Signature</label>
         <input
           type="text"
@@ -886,7 +990,7 @@ const AthleteRegistrationForm = () => {
           onChange={handleChange}
         />
         {errors.digitalSignature && <span>{errors.digitalSignature}</span>}
-      </div>
+      </div> */}
 
       <div className="flex justify-between">
         <button

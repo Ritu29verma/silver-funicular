@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
-
 const InvestigatorForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -21,8 +19,6 @@ const InvestigatorForm = () => {
   const [errors, setErrors] = useState({});
   const [licenseFiles, setLicenseFiles] = useState([{ file: null }]);
 
-  const navigate = useNavigate();
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,7 +99,6 @@ const InvestigatorForm = () => {
       .then(response => {
         console.log(response.data);
         alert('Form submitted successfully!');
-        navigate('/login');
         // Reset form here if needed
       })
       .catch(error => {
@@ -112,10 +107,11 @@ const InvestigatorForm = () => {
   };
 
   return (
-    <div className="bg-gray-100 p-6 min-h-screen flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-8">
+    <div className="bg-[#e4e4e2] p-6 min-h-screen flex flex-col items-center justify-center">
+      <div className="bg-white shadow-2xl rounded-lg w-full max-w-4xl pt-4 my-auto">
         <h2 className="text-2xl font-bold text-center mb-6">Investigator Registration Form</h2>
-
+</div>
+<div className="bg-white shadow-2xl mt-3 rounded-lg w-full max-w-4xl p-8">
         <form onSubmit={handleSubmit}>
           {/* Personal Details Section */}
           <div>
