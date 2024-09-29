@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'
 
 const AthleteRegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -34,7 +35,7 @@ const AthleteRegistrationForm = () => {
     physicianEmail: '',
     wadaRegistration: '',
     biologicalPassportNumber: '',
-    biologicalPassportUpload: null,
+    biologicalPassport: null,
     lastTestDate: '',
     testResults: [
       { date: '', type: '', result: '', authority: '', upload: null },
@@ -46,6 +47,10 @@ const AthleteRegistrationForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [medicalReports, setMedicalReports] = useState([{ file: null }]);
+  const [biologicalPassport, setBiologicalPassport] = useState({ file: null });
+
+
 
 
   const validateForm = () => {
@@ -129,50 +134,56 @@ const AthleteRegistrationForm = () => {
     }
   
     // Check if at least one test result is added
-    if (formData.testResults.length === 0) {
-      newErrors.testResults = 'At least one test result is required';
-    }
+    if (!formData.lastTestDate) newErrors.lastTestDate = 'Last Test Date is required.';
+    if (!formData.digitalSignature) newErrors.digitalSignature = 'Digital Signature is required.';
+    formData.testResults.forEach((result, index) => {
+      if (!result.type) newErrors[`testResults.${index}.type`] = 'Type is required.';
+      if (!result.result) newErrors[`testResults.${index}.result`] = 'Result is required.';
+      if (!result.authority) newErrors[`testResults.${index}.authority`] = 'Authority is required.';
+    });
   
-    // Check if medical reports are uploaded
-    if (formData.medicalReports.length === 0) {
-      newErrors.medicalReports = 'At least one medical report is required';
-    }
+    // // Check if medical reports are uploaded
+    // if (formData.medicalReports.length === 0) {
+    //   newErrors.medicalReports = 'At least one medical report is required';
+    // }
   
     // Set errors and return
     return newErrors;
   };
   
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
+    const { name, value, type } = e.target;
 
     if (type === 'checkbox') {
       setFormData({ ...formData, [name]: e.target.checked });
-    } else if (type === 'file') {
-      if (name === 'biologicalPassportUpload') {
-        setFormData({ ...formData, biologicalPassportUpload: files[0] });
-      } else {
-        const updatedReports = [...formData.medicalReports];
-        updatedReports.push(files[0]);
-        setFormData({ ...formData, medicalReports: updatedReports });
-      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    // Perform any necessary validation on the files if needed
-    setFormData((prevData) => ({
-      ...prevData,
-      medicalDocuments: files,
-    }));
+  const medicalReportsChange = (index, e) => {
+    const newMedicalReports = [...medicalReports];
+    newMedicalReports[index].file = e.target.files[0];
+    setMedicalReports(newMedicalReports);
+  };
+  // const biologicalPassportChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setBiologicalPassport({ file });
+  // };
+
+  const addMedicalReports = () => {
+    setMedicalReports([...medicalReports, { file: null }]);
   };
 
+
   const handleTestResultChange = (index, e) => {
-    const updatedResults = [...formData.testResults];
-    updatedResults[index][e.target.name] = e.target.value;
-    setFormData({ ...formData, testResults: updatedResults });
+    const { name, value } = e.target;
+    const newTestResults = [...formData.testResults];
+    newTestResults[index][name] = value;
+    setFormData((prevData) => ({
+      ...prevData,
+      testResults: newTestResults,
+    }));
   };
 
   const addTestResult = () => {
@@ -185,17 +196,97 @@ const AthleteRegistrationForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validate the form
     const newErrors = validateForm();
     setErrors(newErrors);
-  
+
+    console.log("Validation Errors: ", newErrors);
+
     if (Object.keys(newErrors).length === 0) {
-      // No errors, handle form submission logic (API calls, etc.)
-      console.log('Form Data Submitted:', formData);
-      alert('Form submitted successfully!');
+      
+      
+      try {
+        // Create FormData object to send multipart/form-data
+        const data = new FormData();
+        data.append('fullName', formData.fullName);
+        data.append('dob', formData.dob);
+        data.append('gender', formData.gender);
+        data.append('nationality', formData.nationality);
+        data.append('sport', formData.sport);
+        data.append('category', formData.category);
+        data.append('teamClubName', formData.teamClubName);
+        data.append('athleteId', formData.athleteId);
+        data.append('passportId', formData.passportId);
+        data.append('contactNumber', formData.contactNumber);
+        data.append('email', formData.email);
+        data.append('residentialAddress', formData.residentialAddress);
+        data.append('emergencyContactName', formData.emergencyContactName);
+        data.append('emergencyContactNumber', formData.emergencyContactNumber);
+        data.append('coachName', formData.coachName);
+        data.append('coachContactNumber', formData.coachContactNumber);
+        data.append('coachEmail', formData.coachEmail);
+        data.append('agentName', formData.agentName);
+        data.append('agentContactNumber', formData.agentContactNumber);
+        data.append('agentEmail', formData.agentEmail);
+        data.append('majorCompetitions', formData.majorCompetitions);
+        data.append('ranking', formData.ranking);
+        data.append('previousInjuries', formData.previousInjuries);
+        data.append('surgeries', formData.surgeries);
+        data.append('medications', formData.medications);
+        data.append('allergies', formData.allergies);
+        data.append('physicianName', formData.physicianName);
+        data.append('physicianContactNumber', formData.physicianContactNumber);
+        data.append('physicianEmail', formData.physicianEmail);
+        data.append('wadaRegistration', formData.wadaRegistration);
+        data.append('biologicalPassportNumber', formData.biologicalPassportNumber);
+
+        // // Append files
+        // if (biologicalPassport.file) {
+        //   data.append('biologicalPassport', biologicalPassport.file);
+        // }
+
+        // Append test results
+        formData.testResults.forEach((result, index) => {
+          data.append(`testResults[${index}][date]`, result.date);
+          data.append(`testResults[${index}][type]`, result.type);
+          data.append(`testResults[${index}][result]`, result.result);
+          data.append(`testResults[${index}][authority]`, result.authority);
+          if (result.upload) {
+            data.append(`testResults[${index}][upload]`, result.upload);
+          }
+        });
+
+        // Append medical reports
+        medicalReports.forEach((medicalReport) => {
+          if (medicalReport.file) {
+            data.append('medicalReports', medicalReport.file);
+          }
+        });
+
+        data.append('consentTesting', formData.consentTesting);
+        data.append('declaration', formData.declaration);
+
+        for (let pair of data.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
+
+        // Send the form data to the API
+        const response = await axios.post('http://localhost:5000/api/athletes/register', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        console.log('Form submission successful', response.data);
+        alert('Form submitted successfully!');
+      } catch (error) {
+        console.error('Error submitting the form', error);
+        alert('Failed to submit the form');
+       
+      } 
     } else {
       // Handle errors (UI feedback)
       alert('Please fix the errors before submitting.');
@@ -541,36 +632,234 @@ const AthleteRegistrationForm = () => {
       </div>
 
       {formData.testResults.map((result, index) => (
-  <div key={index}>
-    <label className="block text-gray-700">Test Result Date</label>
-    <input
-      type="date"
-      name="date"
-      value={result.date}
-      onChange={(e) => handleTestResultChange(index, e)}
-      className={`w-full px-4 py-2 border ${
-        errors.testResults ? "border-red-500" : "border-gray-300"
-      } rounded-md`}
-    />
-    {errors.testResults && <p className="text-red-500">{errors.testResults}</p>}
-  </div>
-))}
-      <h3 className="text-lg font-semibold mt-6 mb-2">Medical Document Upload:</h3>
-      <div className="mb-4">
-        <label className="block font-medium mb-2" htmlFor="medicalDocuments">Upload Medical Documents (PDF/JPG)</label>
+        <div key={index}>
+          <h3>Test Result {index + 1}</h3>
+          <label>
+            Type:
+            <input
+              type="text"
+              name="type"
+              value={result.type}
+              onChange={(e) => handleTestResultChange(index, e)}
+            />
+          </label>
+          {errors[`testResults.${index}.type`] && <p>{errors[`testResults.${index}.type`]}</p>}
+
+          <label>
+            Result:
+            <input
+              type="text"
+              name="result"
+              value={result.result}
+              onChange={(e) => handleTestResultChange(index, e)}
+            />
+          </label>
+          {errors[`testResults.${index}.result`] && <p>{errors[`testResults.${index}.result`]}</p>}
+
+          <label>
+            Authority:
+            <input
+              type="text"
+              name="authority"
+              value={result.authority}
+              onChange={(e) => handleTestResultChange(index, e)}
+            />
+          </label>
+          {errors[`testResults.${index}.authority`] && <p>{errors[`testResults.${index}.authority`]}</p>}
+        </div>
+      ))}
+
+      <div>
+        <label>Allergies</label>
         <input
-          type="file"
-          id="medicalDocuments"
-          name="medicalDocuments"
-          accept=".pdf,.jpg,.jpeg,.png"
-          onChange={handleFileChange}
-          multiple
-          className={`w-full p-2 border ${errors.medicalDocuments ? 'border-red-500' : 'border-gray-300'} rounded`}
+          type="text"
+          name="allergies"
+          value={formData.allergies}
+          onChange={handleChange}
         />
-         {errors.medicalDocuments && errors.medicalDocuments.length > 0 && (
-          <p className="text-red-500 text-sm">{errors.medicalDocuments.join(", ")}</p>
-        )}
+        {errors.allergies && <span>{errors.allergies}</span>}
       </div>
+
+      <div>
+        <label>Biological Passport Number</label>
+        <input
+          type="text"
+          name="biologicalPassportNumber"
+          value={formData.biologicalPassportNumber}
+          onChange={handleChange}
+        />
+        {errors.biologicalPassportNumber && <span>{errors.biologicalPassportNumber}</span>}
+      </div>
+
+      <div>
+        <label>Consent for Testing</label>
+        <input
+          type="checkbox"
+          name="consentTesting"
+          checked={formData.consentTesting}
+          onChange={handleChange}
+        />
+        {errors.consentTesting && <span>{errors.consentTesting}</span>}
+      </div>
+
+      <div>
+        <label>Declaration</label>
+        <input
+          type="checkbox"
+          name="declaration"
+          checked={formData.declaration}
+          onChange={handleChange}
+        />
+        {errors.declaration && <span>{errors.declaration}</span>}
+      </div>
+
+      <div>
+        <label>Last Test Date</label>
+        <input
+          type="date"
+          name="lastTestDate"
+          value={formData.lastTestDate}
+          onChange={handleChange}
+        />
+        {errors.lastTestDate && <span>{errors.lastTestDate}</span>}
+      </div>
+
+      <div>
+        <label>Major Competitions</label>
+        <input
+          type="text"
+          name="majorCompetitions"
+          value={formData.majorCompetitions}
+          onChange={handleChange}
+        />
+        {errors.majorCompetitions && <span>{errors.majorCompetitions}</span>}
+      </div>
+
+      <div>
+        <label>Physician Contact Number</label>
+        <input
+          type="text"
+          name="physicianContactNumber"
+          value={formData.physicianContactNumber}
+          onChange={handleChange}
+        />
+        {errors.physicianContactNumber && <span>{errors.physicianContactNumber}</span>}
+      </div>
+
+      <div>
+        <label>Physician Email</label>
+        <input
+          type="email"
+          name="physicianEmail"
+          value={formData.physicianEmail}
+          onChange={handleChange}
+        />
+        {errors.physicianEmail && <span>{errors.physicianEmail}</span>}
+      </div>
+
+      <div>
+        <label>Physician Name</label>
+        <input
+          type="text"
+          name="physicianName"
+          value={formData.physicianName}
+          onChange={handleChange}
+        />
+        {errors.physicianName && <span>{errors.physicianName}</span>}
+      </div>
+
+      <div>
+        <label>Previous Injuries</label>
+        <input
+          type="text"
+          name="previousInjuries"
+          value={formData.previousInjuries}
+          onChange={handleChange}
+        />
+        {errors.previousInjuries && <span>{errors.previousInjuries}</span>}
+      </div>
+
+      <div>
+        <label>Ranking</label>
+        <input
+          type="text"
+          name="ranking"
+          value={formData.ranking}
+          onChange={handleChange}
+        />
+        {errors.ranking && <span>{errors.ranking}</span>}
+      </div>
+
+      <div>
+        <label>Surgeries</label>
+        <input
+          type="text"
+          name="surgeries"
+          value={formData.surgeries}
+          onChange={handleChange}
+        />
+        {errors.surgeries && <span>{errors.surgeries}</span>}
+      </div>
+
+      <div>
+        <label>WADA Registration</label>
+        <input
+          type="text"
+          name="wadaRegistration"
+          value={formData.wadaRegistration}
+          onChange={handleChange}
+        />
+        {errors.wadaRegistration && <span>{errors.wadaRegistration}</span>}
+      </div>
+
+      <div>
+        <label>Medications</label>
+        <input
+          type="text"
+          name="medications"
+          value={formData.medications}
+          onChange={handleChange}
+        />
+        {errors.medications && <span>{errors.medications}</span>}
+      </div>
+
+
+      <h3 className="text-lg font-semibold mt-6 mb-2">Medical Document Upload:</h3>
+      <div className="mb-6">
+            {medicalReports.map((medicalReport, index) => (
+              <div key={index} className="mb-4">
+                <input
+                  type="file"
+                  name={`medicalReport-${index}`}
+                  onChange={(e) => medicalReportsChange(index, e)}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  accept=".pdf,.doc,.docx,.png,.jpg"
+                  required
+                />
+                
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addMedicalReports}
+              className="bg-green-600 text-white p-2 rounded hover:bg-green-500"
+            >
+              Add 
+            </button>
+          </div>
+
+          {/* <div  className="mb-4">
+                <input
+                  type="file"
+                  name='biologicalPassport'
+                  onChange={(e) => biologicalPassportChange( e)}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  accept=".pdf,.doc,.docx,.png,.jpg"
+                  required
+                />
+                
+              </div> */}
+
 
       <h3 className="text-lg font-semibold mt-6 mb-2">Consent and Declarations:</h3>
       <div className="mb-4">
@@ -583,6 +872,17 @@ const AthleteRegistrationForm = () => {
           className={`w-full p-2 border ${errors.consent ? 'border-red-500' : 'border-gray-300'} rounded`}
         ></textarea>
         {errors.consent && <p className="text-red-500 text-sm">{errors.consent}</p>}
+      </div>
+
+      <div>
+        <label>Digital Signature</label>
+        <input
+          type="text"
+          name="digitalSignature"
+          value={formData.digitalSignature}
+          onChange={handleChange}
+        />
+        {errors.digitalSignature && <span>{errors.digitalSignature}</span>}
       </div>
 
       <div className="flex justify-between">
