@@ -130,7 +130,7 @@ const MultiStepForm = () => {
         return <Form2 formData={formData} setFormData={setFormData} />;
     
       case 3:
-        return <Form4 formData={formData} handleChange={handleNestedChange} errors={errors} />;
+        return <Form4 formData={formData} handleChange={handleNestedChange} errors={errors} setFormData={setFormData} />;
       case 4:
         return <Form5 formData={formData} handleChange={handleChange} errors={errors} />;
       case 5:
@@ -146,7 +146,7 @@ const MultiStepForm = () => {
       const response = await axios.post('http://localhost:5000/api/doping-form/submit-form', formData);
       console.log(response.data.message);
 
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Failed to submit form:', error);
     }
@@ -243,9 +243,9 @@ const MultiStepForm = () => {
 
 
   return (
-  <div className='bg-gray-100 min-h-screen w-full'>
+  <div className='bg-[#ADBC9F] min-h-screen w-full'>
       <div className="max-w-4xl mx-auto  p-8">
-      <h1 className="text-2xl font-bold mb-4 bg-white p-5 flex items-center justify-center rounded-lg">Doping Verification Form</h1>
+      <h1 className="text-2xl font-bold mb-4 bg-[#12372A] text-white p-5 flex items-center justify-center rounded-lg">Doping Verification Form</h1>
       {renderForm()}
       <div className="flex justify-between mt-4">
         {currentStep > 1 && (
@@ -254,14 +254,14 @@ const MultiStepForm = () => {
           </button>
         )}
         {currentStep < 5 && (
-          <button onClick={nextStep} className="bg-blue-500 text-white px-4 py-2 rounded">
+          <button onClick={nextStep} className="bg-[#12372A] text-white px-4 py-2 rounded">
             Next
           </button>
         )}
         {currentStep === 5 && (
           <button 
             onClick={handleSubmit}
-            className="bg-green-500 text-white px-4 py-2 rounded "
+            className="bg-[#12372A] text-white px-4 py-2 rounded "
           >
             Predict
           </button>

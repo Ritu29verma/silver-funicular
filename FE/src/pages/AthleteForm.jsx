@@ -299,8 +299,8 @@ const AthleteRegistrationForm = () => {
 
   return (
 
-    <div className="bg-[#e4e4e2] p-6 min-h-screen flex flex-col items-center justify-center">
-    <div className="bg-white shadow-2xl rounded-lg w-full max-w-4xl pt-4 my-auto">
+    <div className="bg-[#ADBC9F] p-6 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-[#12372A] text-white shadow-2xl rounded-lg w-full max-w-4xl pt-4 my-auto">
       <h2 className="text-2xl font-bold text-center mb-6">Athlete Registration Form</h2>
 </div>
 <form onSubmit={handleSubmit} className="bg-white shadow-2xl mt-3 rounded-lg w-full max-w-4xl p-8">
@@ -310,7 +310,7 @@ const AthleteRegistrationForm = () => {
 <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-8 bg-white rounded shadow-md">
       <h2 className="text-2xl font-bold flex justify-center items-center mb-4">Athlete Registration Form</h2> */}
       
-      <h3 className="text-lg font-semibold mt-6 mb-2">Personal Details:</h3>
+      <h3 className="font-semibold bg-[#12372A] text-white p-4 mt-4 mb-4">Personal Details:</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div >
           <label className="block font-medium mb-2" htmlFor="fullName">Full Name</label>
@@ -518,7 +518,7 @@ const AthleteRegistrationForm = () => {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold mt-6 mb-2">Professional Information:</h3>
+      <h3 className="font-semibold bg-[#12372A] text-white p-4 mt-4 mb-4">Professional Information:</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div >
           <label className="block font-medium mb-2" htmlFor="coachName">Training Coach Name</label>
@@ -602,7 +602,7 @@ const AthleteRegistrationForm = () => {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold mt-6 mb-2">Competition History:</h3>
+      <h3 className="font-semibold bg-[#12372A] text-white p-4 mt-4 mb-4">Competition History:</h3>
       <div className="mb-4">
         <label className="block font-medium mb-2" htmlFor="competitionHistory">Competition History (List)</label>
         <textarea
@@ -615,7 +615,7 @@ const AthleteRegistrationForm = () => {
         {errors.competitionHistory && <p className="text-red-500 text-sm">{errors.competitionHistory}</p>}
       </div>
 
-      <h3 className="text-lg font-semibold mt-6 mb-2">Medical History:</h3>
+      <h3 className="font-semibold bg-[#12372A] text-white p-4 mt-4 mb-4">Medical History:</h3>
       <div className="mb-4">
         <label className="block font-medium mb-2" htmlFor="medicalHistory">Medical History (List)</label>
         <textarea
@@ -628,7 +628,7 @@ const AthleteRegistrationForm = () => {
         {errors.medicalHistory && <p className="text-red-500 text-sm">{errors.medicalHistory}</p>}
       </div>
 
-      <h3 className="text-lg font-semibold mt-6 mb-2">Doping Control and Biological Passport:</h3>
+      <h3 className="font-semibold bg-[#12372A] text-white p-4 mt-4 mb-4">Doping Control and Biological Passport:</h3>
       <div className="mb-4">
         <label className="block font-medium mb-2" htmlFor="dopingControl">Doping Control Records</label>
         <textarea
@@ -804,7 +804,7 @@ const AthleteRegistrationForm = () => {
         
         <button
           onClick={addTestResult}
-          className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+          className="bg-[#12372A] hover:bg-[#287a5d] text-white px-4 py-2 rounded mt-4"
         >
           Add Test Result
         </button>
@@ -925,7 +925,7 @@ const AthleteRegistrationForm = () => {
             <button
               type="button"
               onClick={addMedicalReports}
-              className="bg-green-600 text-white p-2 rounded hover:bg-green-500"
+              className="bg-[#12372A] text-white p-2 rounded hover:bg-[#246c53]"
             >
               Add 
             </button>
@@ -995,7 +995,7 @@ const AthleteRegistrationForm = () => {
       <div className="flex justify-between">
         <button
           type="button"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-[#12372A] text-white px-4 py-2 rounded hover:bg-[#2b8062]"
           onClick={handleSubmit}
         >
           Submit

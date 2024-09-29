@@ -23,9 +23,11 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+    <div className="flex flex-col items-center justify-center h-screen bg-[#ADBC9F]">
+      <div className="bg-[#12372A] text-white p-2 pt-4 rounded-lg shadow-lg w-96 mb-4">
         <h2 className="text-2xl font-bold mb-4 text-center">Investigator Login</h2>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Email:</label>
@@ -50,7 +52,7 @@ const LoginForm = () => {
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <button 
             type="submit" 
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className="w-full bg-[#12372A] text-white p-2 rounded hover:bg-[#2a7a5e]"
           >
             Login
           </button>

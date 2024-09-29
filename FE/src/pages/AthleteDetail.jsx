@@ -39,9 +39,9 @@ const AthleteDetail = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="bg-blue-500 text-white text-center py-6">
+    <div className=" min-h-screen flex items-center bg-[#ADBC9F]">
+      <div className="w-1/2 mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <div className="bg-[#12372A] text-white text-center py-6">
           <h1 className="text-3xl font-bold">{athlete.fullName}</h1>
           <p className="text-lg">Athlete ID: {athlete.athleteId}</p>
         </div>
@@ -98,9 +98,11 @@ const AthleteDetail = () => {
             <span className="font-semibold">Last Test Date:</span> {athlete.lastTestDate}
           </p>
         </div>
-        <button onClick={handleOpenForm} className="bg-blue-500 text-white px-4 py-2 rounded">
+       <div className='flex items-center justify-center p-5'>
+       <button onClick={handleOpenForm} className="bg-[#12372A] text-white px-4 py-2 rounded">
         Open Doping Verification Form
       </button>
+       </div>
       </div>
     </div>
   );

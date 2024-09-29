@@ -107,8 +107,8 @@ const InvestigatorForm = () => {
   };
 
   return (
-    <div className="bg-[#e4e4e2] p-6 min-h-screen flex flex-col items-center justify-center">
-      <div className="bg-white shadow-2xl rounded-lg w-full max-w-4xl pt-4 my-auto">
+    <div className="bg-[#ADBC9F] p-6 min-h-screen flex flex-col items-center justify-center">
+      <div className="bg-[#12372A] text-white shadow-2xl rounded-lg w-full max-w-4xl pt-4 my-auto">
         <h2 className="text-2xl font-bold text-center mb-6">Investigator Registration Form</h2>
 </div>
 <div className="bg-white shadow-2xl mt-3 rounded-lg w-full max-w-4xl p-8">
@@ -333,7 +333,7 @@ const InvestigatorForm = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-blue-600 text-white p-2 rounded-lg w-full mt-4 hover:bg-blue-500"
+            className="bg-[#12372A] text-white p-2 rounded-lg w-full mt-4 hover:bg-[#226850]"
           >
             Submit
           </button>

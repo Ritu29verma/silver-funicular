@@ -1,35 +1,61 @@
 import React from 'react';
 
-const Form4 = ({ formData, handleChange, errors }) => {
+const Form4 = ({ formData, handleChange, errors, setFormData }) => {
+
+  const handleCompetitionChange = (field) => {
+    setFormData((prevState) => {
+      const newState = { ...prevState };
+  
+      // Toggle the current checkbox
+      if (field === 'inCompetition') {
+        newState.analysisDetails.inCompetition = !prevState.analysisDetails.inCompetition;
+        if (newState.analysisDetails.inCompetition) {
+          newState.analysisDetails.outOfCompetition = false; // Deselect the other checkbox
+        }
+      } else if (field === 'outOfCompetition') {
+        newState.analysisDetails.outOfCompetition = !prevState.analysisDetails.outOfCompetition;
+        if (newState.analysisDetails.outOfCompetition) {
+          newState.analysisDetails.inCompetition = false; // Deselect the other checkbox
+        }
+      }
+  
+      return newState;
+    });
+  };
+
+  
   return (
     <div className='bg-white p-5 rounded-md'>
     <div className="space-y-4">
       <h2 className="text-xl font-bold"> Information for Analysis</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block font-medium mb-2" >
-            <input
-              type="checkbox"
-              name="inCompetition"
-              checked={formData.analysisDetails.inCompetition}
-              onChange={(e) => handleChange(e, 'analysisDetails', 'inCompetition')}
-            />
-            In Competition
-          </label>
-        </div>
+      <div>
+  <label className="flex items-center space-x-3 mb-2">
+    <input
+      type="checkbox"
+      name="inCompetition"
+      checked={formData.analysisDetails.inCompetition}
+      onChange={() => handleCompetitionChange('inCompetition')}
+      className="w-5 h-5 text-[#12372A] border-2 border-gray-300 rounded focus:ring-2 focus:ring-[#12372A] focus:outline-none transition duration-300 ease-in-out"
+    />
+    <span className="text-sm md:text-base font-medium text-gray-700">In Competition</span>
+  </label>
+</div>
 
-        <div>
-          <label className="block font-medium mb-2" >
-            <input
-              type="checkbox"
-              name="outOfCompetition"
-              checked={formData.analysisDetails.outOfCompetition}
-              onChange={(e) => handleChange(e, 'analysisDetails', 'outOfCompetition')}
-            />
-            Out of Competition
-          </label>
-        </div>
+<div>
+  <label className="flex items-center space-x-3 mb-2">
+    <input
+      type="checkbox"
+      name="outOfCompetition"
+      checked={formData.analysisDetails.outOfCompetition}
+      onChange={() => handleCompetitionChange('outOfCompetition')}
+      className="w-5 h-5 text-[#12372A] border-2 border-gray-300 rounded focus:ring-2 focus:ring-[#12372A] focus:outline-none transition duration-300 ease-in-out"
+    />
+    <span className="text-sm md:text-base font-medium text-gray-700">Out of Competition</span>
+  </label>
+</div>
+
 
         <div>
           <label className="block font-medium mb-2" >Date of Last Competition</label>

@@ -40,12 +40,18 @@ const Form2 = ({ formData, setFormData }) => {
       const addSubstance = (index) => {
         setFormData((prevData) => {
           const updatedTests = [...prevData.dopingTestDetails];
-          updatedTests[index].substanceDetected.push({
-            substanceName: '',
-            substanceCategory: '',
-            concentration: '',
-            detectionMethod: '',
-          });
+          updatedTests[index] = {
+            ...updatedTests[index],
+            substanceDetected: [
+              ...updatedTests[index].substanceDetected,
+              {
+                substanceName: '',
+                substanceCategory: '',
+                concentration: '',
+                detectionMethod: '',
+              },
+            ],
+          };
           return { ...prevData, dopingTestDetails: updatedTests };
         });
       };
@@ -65,7 +71,7 @@ const Form2 = ({ formData, setFormData }) => {
       <div className="space-y-4">
         {formData.dopingTestDetails.map((test, testIndex) => (
           <div key={testIndex} className="p-4 border border-gray-300 rounded-md bg-gray-50">
-            <h3 className="font-semibold mb-2">Test #{testIndex + 1}</h3>
+            <h3 className="font-semibold bg-[#12372A] text-white p-4 mt-4 mb-4">Test {testIndex + 1}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block font-medium mb-2">Type of Test</label>
@@ -141,57 +147,61 @@ const Form2 = ({ formData, setFormData }) => {
               </div>
             </div>
 
-            <h4 className="font-semibold mt-4">Substances Detected</h4>
+            <h4 className="font-semibold bg-[#12372A] text-white p-4 mt-4 mb-4">Substances Detected</h4>
             {test.substanceDetected.map((substance, substanceIndex) => (
-              <div key={substanceIndex} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-medium mb-2">Substance Name</label>
-                  <input
-                    type="text"
-                    name="substanceName"
-                    value={substance.substanceName}
-                    onChange={(e) => handleSubstanceChange(testIndex, substanceIndex, e)}
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block font-medium mb-2">Substance Category</label>
-                  <input
-                    type="text"
-                    name="substanceCategory"
-                    value={substance.substanceCategory}
-                    onChange={(e) => handleSubstanceChange(testIndex, substanceIndex, e)}
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block font-medium mb-2">Concentration Detected (ng/ml)</label>
-                  <input
-                    type="number"
-                    name="concentration"
-                    value={substance.concentration}
-                    onChange={(e) => handleSubstanceChange(testIndex, substanceIndex, e)}
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block font-medium mb-2">Method of Detection</label>
-                  <input
-                    type="text"
-                    name="detectionMethod"
-                    value={substance.detectionMethod}
-                    onChange={(e) => handleSubstanceChange(testIndex, substanceIndex, e)}
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-              </div>
-            ))}
-            <button onClick={() => addSubstance(testIndex)} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
+                            <div
+                                key={substanceIndex}
+                                className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b pb-4 mb-4"
+                            >
+                                <div>
+                                    <label className="block font-medium mb-2">Substance Name</label>
+                                    <input
+                                        type="text"
+                                        name="substanceName"
+                                        value={substance.substanceName}
+                                        onChange={(e) => handleSubstanceChange(testIndex, substanceIndex, e)}
+                                        className="w-full border px-4 py-2 rounded"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block font-medium mb-2">Substance Category</label>
+                                    <input
+                                        type="text"
+                                        name="substanceCategory"
+                                        value={substance.substanceCategory}
+                                        onChange={(e) => handleSubstanceChange(testIndex, substanceIndex, e)}
+                                        className="w-full border px-4 py-2 rounded"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block font-medium mb-2">Concentration Detected (ng/ml)</label>
+                                    <input
+                                        type="number"
+                                        name="concentration"
+                                        value={substance.concentration}
+                                        onChange={(e) => handleSubstanceChange(testIndex, substanceIndex, e)}
+                                        className="w-full border px-4 py-2 rounded"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block font-medium mb-2">Method of Detection</label>
+                                    <input
+                                        type="text"
+                                        name="detectionMethod"
+                                        value={substance.detectionMethod}
+                                        onChange={(e) => handleSubstanceChange(testIndex, substanceIndex, e)}
+                                        className="w-full border px-4 py-2 rounded"
+                                    />
+                                </div>
+                            </div>
+                        ))}
+
+            <button onClick={() => addSubstance(testIndex)} className="bg-[#12372A] text-white px-4 py-2 rounded mt-2">
               Add Substance
             </button>
           </div>
         ))}
-        <button onClick={addTest} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        <button onClick={addTest} className="mt-4 px-4 py-2 bg-[#12372A] text-white rounded">
           Add Doping Test
         </button>
       </div>
