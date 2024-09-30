@@ -59,7 +59,6 @@ function LandingPage() {
      <section id="register" className="py-16 bg-primary text-black text-center">
       <h2 className="text-3xl font-bold mb-6">Ready to Keep Sports Clean?</h2>
       <p className="text-lg mb-8">Join thousands of athletes and sports professionals ensuring integrity and fairness in sports.</p>
-      <a href="#register" className="bg-secondary px-6 py-3 text-lg rounded">Register Now</a>
     </section>
      </div>
       <Footer />
