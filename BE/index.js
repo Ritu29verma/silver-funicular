@@ -6,6 +6,8 @@ import { connect } from 'mongoose';
 import athleteRoute from './routes/athleteRoute.js';
 import investigatorRoutes from './routes/investigator.js';
 import dopingFormRoutes from './routes/dopingFormRoutes.js'
+import dotenv from "dotenv";
+dotenv.config();
 
 
 import cors from 'cors'
@@ -18,7 +20,7 @@ app.use(urlencoded({ extended: true }));
 app.use(cors())
 
 // Connect to MongoDB
-connect("mongodb+srv://uv84690:SIH2@cluster0.e8ypy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
