@@ -5,19 +5,27 @@ import { dirname, join } from 'path';
 import { connect } from 'mongoose';
 import athleteRoute from './routes/athleteRoute.js';
 import investigatorRoutes from './routes/investigator.js';
-import dopingFormRoutes from './routes/dopingFormRoutes.js'
+import dopingFormRoutes from './routes/dopingFormRoutes.js';
 import dotenv from "dotenv";
+import cors from 'cors';
+
 dotenv.config();
-
-
-import cors from 'cors'
 
 const app = express();
 const { json, urlencoded } = pkg;
+
+// CORS configuration
+const corsOptions = {
+  origin: '*', // Allow all origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify the allowed methods
+  credentials: true, // Allow credentials if needed
+  optionsSuccessStatus: 204, // For legacy browser support
+};
+
 // Middleware
 app.use(json());
 app.use(urlencoded({ extended: true }));
-app.use(cors())
+app.use(cors(corsOptions));
 
 // Connect to MongoDB
 connect(process.env.MONGODB_URI, {
