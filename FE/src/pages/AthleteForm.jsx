@@ -276,7 +276,7 @@ const AthleteRegistrationForm = () => {
         }
 
         // Send the form data to the API
-        const response = await axios.post('http://localhost:5000/api/athletes/register', data, {
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/athletes/register`, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

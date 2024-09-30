@@ -13,7 +13,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/investigators/login', { email, password });
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/investigators/login`, { email, password });
       localStorage.setItem('token', response.data.token);
       
       navigate('/athlete-list');

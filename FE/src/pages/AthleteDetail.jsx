@@ -14,7 +14,7 @@ const AthleteDetail = () => {
   useEffect(() => {
     const fetchAthlete = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/athletes/allAthletes/${athleteId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/athletes/allAthletes/${athleteId}`);
         setAthlete(response.data);
         setLoading(false);
       } catch (error) {

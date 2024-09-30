@@ -143,7 +143,7 @@ const MultiStepForm = () => {
  
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/doping-form/submit-form', formData);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/doping-form/submit-form`, formData);
       console.log(response.data.message);
 
       navigate('/dashboard');

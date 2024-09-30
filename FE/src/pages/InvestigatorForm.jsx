@@ -95,7 +95,7 @@ const InvestigatorForm = () => {
     });
   
     // Submit form data using Axios
-    axios.post('http://localhost:5000/api/investigators/register', formDataToSubmit)
+    axios.post(`${import.meta.env.VITE_BASE_URL}/api/investigators/register`, formDataToSubmit)
       .then(response => {
         console.log(response.data);
         alert('Form submitted successfully!');
